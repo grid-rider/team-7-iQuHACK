@@ -12,10 +12,10 @@ from qiskit import transpile
 edges = {
     ('A', 'B'): 4,
     ('A', 'C'): 3,
-    ('B', 'D'): 6,
-    ('C', 'D'): 10
+    ('B', 'E'): 6,
+    ('C', 'D'): 10,
 }
-vertices = ['A', 'B', 'C', 'D']
+vertices = ['A', 'B', 'C', 'D', 'E']
 
 # Create a Quadratic Program
 qp = QuadraticProgram()
