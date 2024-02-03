@@ -56,8 +56,7 @@ qaoa = QAOA(sampler=sampler, optimizer=optimizer, reps=2)
 # Convert QUBO problem to Ising Hamiltonian (PauliSumOp)
 op, offset = qubo.to_ising()
 
-# # Generate the parameterized QAOA circuit
-# qaoa_circuit = qaoa.construct_circuit(qaoa.ansatz.parameters, op)
+# Generate the parameterized QAOA circuit
 
 # # Transpile the circuit for better visualization
 # transpiled_circuit = transpile(qaoa_circuit[0], backend)
@@ -68,5 +67,8 @@ op, offset = qubo.to_ising()
 # Solve the QUBO problem using QAOA
 meo = MinimumEigenOptimizer(qaoa)
 result = meo.solve(qubo)
+
+qaoa_circuit = qaoa.ansatz
+print(qaoa_circuit)
 
 print("Solution: ", result)
