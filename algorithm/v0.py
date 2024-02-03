@@ -9,13 +9,23 @@ from qiskit_aer import Aer
 from qiskit import transpile
 
 # Define the graph
+# edges = {
+#     ('A', 'B'): 4,
+#     ('A', 'C'): 3,
+#     ('B', 'D'): 6,
+#     ('C', 'D'): 10
+# }
+
 edges = {
-    ('A', 'B'): 4,
-    ('A', 'C'): 3,
-    ('B', 'D'): 6,
-    ('C', 'D'): 10
+    ('A', 'B'): 4, ('A', 'C'): 3, ('B', 'D'): 6, ('C', 'D'): 10,
+    ('D', 'E'): 2, ('E', 'F'): 1, ('F', 'G'): 7, ('G', 'H'): 5,
+    ('H', 'I'): 9, ('I', 'J'): 4, ('A', 'J'): 8, ('B', 'E'): 3,
+    ('C', 'F'): 2, ('D', 'G'): 4, ('E', 'H'): 6, ('F', 'I'): 7,
+    ('G', 'J'): 3, ('A', 'E'): 5, ('B', 'F'): 6, ('C', 'G'): 7,
+    ('D', 'H'): 8, ('E', 'I'): 9, ('F', 'J'): 5
 }
-vertices = ['A', 'B', 'C', 'D']
+
+vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
 # Create a Quadratic Program
 qp = QuadraticProgram()
@@ -55,14 +65,6 @@ qaoa = QAOA(sampler=sampler, optimizer=optimizer, reps=2)
 
 # Convert QUBO problem to Ising Hamiltonian (PauliSumOp)
 op, offset = qubo.to_ising()
-
-# Generate the parameterized QAOA circuit
-
-# # Transpile the circuit for better visualization
-# transpiled_circuit = transpile(qaoa_circuit[0], backend)
-
-# # Print or draw the circuit
-# print(transpiled_circuit.draw())
 
 # Solve the QUBO problem using QAOA
 meo = MinimumEigenOptimizer(qaoa)
