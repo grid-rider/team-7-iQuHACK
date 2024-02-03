@@ -17,15 +17,12 @@ from qiskit import transpile
 # }
 
 edges = {
-    ('A', 'B'): 4, ('A', 'C'): 3, ('B', 'D'): 6, ('C', 'D'): 10,
-    ('D', 'E'): 2, ('E', 'F'): 1, ('F', 'G'): 7, ('G', 'H'): 5,
-    ('H', 'I'): 9, ('I', 'J'): 4, ('A', 'J'): 8, ('B', 'E'): 3,
-    ('C', 'F'): 2, ('D', 'G'): 4, ('E', 'H'): 6, ('F', 'I'): 7,
-    ('G', 'J'): 3, ('A', 'E'): 5, ('B', 'F'): 6, ('C', 'G'): 7,
-    ('D', 'H'): 8, ('E', 'I'): 9, ('F', 'J'): 5
+    ('A', 'B'): 4,
+    ('A', 'C'): 3,
+    ('B', 'E'): 6,
+    ('C', 'D'): 10,
 }
-
-vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+vertices = ['A', 'B', 'C', 'D', 'E']
 
 # Create a Quadratic Program
 qp = QuadraticProgram()
