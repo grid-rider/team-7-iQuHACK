@@ -9,6 +9,13 @@ from qiskit_aer import Aer
 from qiskit import transpile
 
 # Define the graph
+# edges = {
+#     ('A', 'B'): 4,
+#     ('A', 'C'): 3,
+#     ('B', 'D'): 6,
+#     ('C', 'D'): 10
+# }
+
 edges = {
     ('A', 'B'): 4,
     ('A', 'C'): 3,
@@ -55,14 +62,6 @@ qaoa = QAOA(sampler=sampler, optimizer=optimizer, reps=2)
 
 # Convert QUBO problem to Ising Hamiltonian (PauliSumOp)
 op, offset = qubo.to_ising()
-
-# Generate the parameterized QAOA circuit
-
-# # Transpile the circuit for better visualization
-# transpiled_circuit = transpile(qaoa_circuit[0], backend)
-
-# # Print or draw the circuit
-# print(transpiled_circuit.draw())
 
 # Solve the QUBO problem using QAOA
 meo = MinimumEigenOptimizer(qaoa)
