@@ -16,13 +16,22 @@ from qiskit import transpile
 #     ('C', 'D'): 10
 # }
 
+# edges = {
+#     ('A', 'B'): 0.04,
+#     ('A', 'C'): 0.03,
+#     ('B', 'E'): 0.06,
+#     ('C', 'D'): 0.1,
+#     ('F', 'D'): 0.4,
+#     ('A', "F"): 0.04,
+# }
+# vertices = ['A', 'B', 'C', 'D', 'E', "F"]
+
 edges = {
-    ('A', 'B'): 4,
-    ('A', 'C'): 3,
-    ('B', 'E'): 6,
-    ('C', 'D'): 10,
+    ('A', 'B'): 0.4, ('A', 'C'): 0.3, ('B', 'D'): 0.6, ('C', 'D'): 1.0,
+    ('G', 'J'): 0.3, ('A', 'E'): 0.5, ('B', 'F'): 0.6, ('C', 'G'): 0.7,
 }
-vertices = ['A', 'B', 'C', 'D', 'E']
+
+vertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 
 # Create a Quadratic Program
 qp = QuadraticProgram()

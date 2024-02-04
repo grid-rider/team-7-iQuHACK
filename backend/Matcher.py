@@ -1,4 +1,4 @@
-# @Auther: Armin Ulrich
+# @Author: Armin Ulrich
 # Description: 
 # This class manages the matching of person 
 from qiskit_optimization import QuadraticProgram
@@ -17,25 +17,22 @@ from backend.PersonMap import Person, PersonMap
 
 class Matcher: 
     
-    def __init__(self, people: List[Person], connections):
-        self.map = PersonMap()
+    def __init__(self, survey_responses: List[dict]):
+        self.survey_responses = survey_responses
     
-    def findmatch(self, person: Person) -> Person: 
+    def findmatches(self, person: Person) -> [Person]: 
 
-        # Define the graph
-        edges = {
-            ('A', 'B'): 4,
-            ('A', 'C'): 3,
-            ('B', 'E'): 6,
-            ('C', 'D'): 10,
-        }
-        vertices = ['A', 'B', 'C', 'D', 'E']
-
+        _filtered_responses = self.survey_responses
+        
+        _map = PersonMap(
+            survey_responses=_filtered_responses,
+            simalarity_threshold=0.6
+        )
         # Create a Quadratic Program
         qp = QuadraticProgram()
 
         # Add binary variables for existing edges
-        for edge in edges:
+        for edge in _map.edges:
             qp.binary_var(name=f"c_{edge[0]}_{edge[1]}")
 
         # Objective function - Minimize the total distance
@@ -43,7 +40,7 @@ class Matcher:
         qp.minimize(linear=linear)
 
         # Constraints - Ensure each vertex is part of exactly one edge in the solution
-        for vertex in vertices:
+        for vertex in _map.vertices:
             involved_edges = [f"c_{edge[0]}_{edge[1]}" for edge in edges if vertex in edge]
             qp.linear_constraint(linear={edge: 1 for edge in involved_edges}, sense='==', rhs=1, name=f"match_constraint_{vertex}")
 
