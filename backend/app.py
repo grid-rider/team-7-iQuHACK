@@ -5,7 +5,7 @@ from parse import response_to_vector, parse_age_range
 import csv 
 
 form_submissions = []
-with open('./backend/data/9_19_responses.csv', newline='') as csvfile:
+with open('./data/9_19_responses.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         domain_group = "mit" if row["Email"].endswith("@mit.edu") else "external"
@@ -26,6 +26,6 @@ with open('./backend/data/9_19_responses.csv', newline='') as csvfile:
         form_submissions.append(participant)
 
 
-# matchmaker = Matcher(form_submissions)
-# matchmaker.find_matches()
+matchmaker = Matcher(form_submissions)
+matchmaker.find_matches()
 

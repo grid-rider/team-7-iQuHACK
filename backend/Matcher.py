@@ -16,9 +16,11 @@ from typing import(
     List
 )
 
-from backend.PersonMap import Person, PersonMap
+from PersonMap import Person, PersonMap
 import copy
 import random
+from similar import normalized_similarity
+
 class Matcher: 
     
     def __init__(self, survey_responses: List[dict]):
@@ -26,14 +28,14 @@ class Matcher:
     
     def find_matches(self) -> [Person]: 
 
-        with open('./backend/data/connections.csv', "w", newline='') as csvfile:
+        with open('./data/connections.csv', "w", newline='') as csvfile:
             fieldnames = ['id', 'response', 'connections', 'result']
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             
 
         
             _filtered_responses = copy.deepcopy(self.survey_responses)
-            _probability_per_iteration = 0.6
+            _probability_per_iteration = 0.9
             counter = 0
 
             while(counter != len(_filtered_responses)):
@@ -69,11 +71,29 @@ class Matcher:
                 if((len(_filtered_responses) - counter) == 1):
                     return 
                                        
-                _map = PersonMap(
-                    survey_responses=_subset,
-                    simalarity_threshold=0
-                )
-                
+                # Ensure that at least one subpair has a similarity score between 0 and 1
+                subpair_with_similarity = False
+                for subpair in _subset:
+                    for other_subpair in _subset:
+                        if subpair != other_subpair:
+                            similarity_score = normalized_similarity(Person(subpair), Person(other_subpair))
+                            if 0 < similarity_score < 1:
+                                subpair_with_similarity = True
+                                break
+                    if subpair_with_similarity:
+                        break
+
+                # If no subpair has a similarity score between 0 and 1, retry with a different set
+                if not subpair_with_similarity:
+                    _filtered_responses = copy.deepcopy(self.survey_responses)
+                    counter = 0
+                else:
+                    # Continue processing the subpair
+                    _map = PersonMap(
+                        survey_responses=_subset,
+                        simalarity_threshold=0  # You can set the similarity threshold here
+                    )
+
                 if(len(_map.edges) > 10):
                     print("Warning")
                 # Create a Quadratic Program
@@ -115,4 +135,3 @@ class Matcher:
                 writer.writerow({'id': "", 'response': "", 'connections':"", 'result': result})
 
                 counter += 1
-        

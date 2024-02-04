@@ -4,7 +4,8 @@ import { FaClipboard, FaCheck } from "react-icons/fa"; // Ensure react-icons is 
 import Navbar from "./Navbar";
 // Import the Graph component
 import Graph from './Graph';
-import { pairs } from './edges';
+import { pairs, edges } from './edges';
+import '../app/globals.css';
 
 // Define your graph elements (nodes and edges) based on your matches
 // const elements = [
@@ -15,14 +16,14 @@ import { pairs } from './edges';
 //   { data: { id: 'bc', source: 'Bob', target: 'Charlie', weight: '85%' } },
 // ];
 
-const nodes = new Set<string>();
-const edges = pairs.map(([source, target], index) => {
-  nodes.add(source);
-  nodes.add(target);
-  return { data: { id: `edge${index}`, source, target, label: `${index * 10}%` }}; // Example edge label
-});
+// const nodes = new Set<string>();
+// const edges = pairs.map(([source, target], index) => {
+//   nodes.add(source);
+//   nodes.add(target);
+//   return { data: { id: `edge${index}`, source, target, label: `${index * 10}%` }}; // Example edge label
+// });
 
-const elements = Array.from(nodes).map(node => ({ data: { id: node } })).concat(edges);
+// const elements = Array.from(nodes).map(node => ({ data: { id: node } })).concat(edges);
 
 const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -32,6 +33,7 @@ const Home: React.FC = () => {
   const [pickupLine, setPickupLine] = useState<string>("");
   const [similarityPercentage, setSimilarityPercentage] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false); // State to manage copy feedback
+  const [elements, setElements] = useState<ElementDefinition[]>([]);
 
   const pickupLines = [
     "If love is a complex vector space, consider me an eigenstate of desire for you.",
@@ -45,24 +47,71 @@ const Home: React.FC = () => {
     e.preventDefault();
     setLoading(true);
   
-    // Assuming your email is userEmail
-    const userEmail = email; // Use state email or a specific one if static
-  
-    // Simulate finding a match by looking through pairs
-    const myPair = pairs.find(pair => pair.includes(userEmail));
-    const matchedEmail = myPair ? myPair.find(email => email !== userEmail) : "No match found";
-  
+    // Simulate finding a match and the similarity percentage
     setTimeout(() => {
       setLoading(false);
       setResults(true);
-      const randomIndex = Math.floor(Math.random() * pickupLines.length);
-      setPickupLine(pickupLines[randomIndex]);
-      setSimilarityPercentage(Math.random() * (100 - 85) + 85); // Simulate a similarity percentage
-      setMatchEmail(matchedEmail || "No match found"); // Update the match email with the actual matched person's email
-      setCopied(false); // Reset copy state
+      
+      // Find user's pair
+      const myPair = pairs.find(pair => pair.includes(email));
+      const matchedEmail = myPair?.find(e => e !== email);
+
+      console.log("found pair", edges.find(([source, target]) => 
+        (source === email && target === matchedEmail) || 
+        (target === email && source === matchedEmail)
+      ));
+
+      let pairsFoundInEdges = 0;
+    let pairsNotFoundInEdges = 0;
+
+    pairs.forEach(pair => {
+      const [email1, email2] = pair;
+      if (edges.some(([source, target]) => (source === email1 && target === email2) || (source === email2 && target === email1))) {
+        pairsFoundInEdges++;
+      } else {
+        pairsNotFoundInEdges++;
+      }
+    });
+
+    console.log("Pairs found in edges:", pairsFoundInEdges);
+    console.log("Pairs not found in edges:", pairsNotFoundInEdges);
+
+      const similarityScore = edges.find(([source, target]) => 
+        (source === email && target === matchedEmail) || 
+        (target === email && source === matchedEmail)
+      )?.[2];
+      
+      // Update states
+      setMatchEmail(matchedEmail || "No match found");
+      setSimilarityPercentage(similarityScore ? (1-similarityScore) * 100 : 0);
+      setPickupLine(pickupLines[Math.floor(Math.random() * pickupLines.length)]);
+      setCopied(false);
+
+      // Construct graph elements
+      const nodes = new Set<string>();
+      edges.forEach(([source, target]) => {
+        nodes.add(source);
+        nodes.add(target);
+      });
+
+      const cyEdges = edges.map(([source, target, weight], index) => {
+        const isHighlight = pairs.some(pair => pair.includes(source) && pair.includes(target));
+
+        return {
+          data: {
+            id: `e${index}`,
+            source,
+            target,
+            label: `${((1-weight) * 100).toFixed(0)}%`,
+            highlight: isHighlight ? 1 : 0,
+          }
+        };
+      });
+
+      const cyNodes = Array.from(nodes).map(node => ({ data: { id: node } }));
+      setElements([...cyNodes, ...cyEdges]);
     }, 2000);
   };
-  
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
 

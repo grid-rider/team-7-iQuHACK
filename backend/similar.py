@@ -28,8 +28,8 @@ def normalized_similarity(person_a: Person, person_b: Person) -> float:
     person_a_response = person_a.survey_response
     person_b_response = person_b.survey_response
 
-    if not check_dealbreakers(person_a, person_b):
-        return -1.0
+    if not check_dealbreakers(person_a.survey_response, person_b.survey_response):
+        return 10.0
     
     # Convert response lists to numpy arrays for cosine similarity calculation
     vec_a = np.array(person_a_response["Responses"])
@@ -38,7 +38,7 @@ def normalized_similarity(person_a: Person, person_b: Person) -> float:
     print(f"vec_b: {vec_b}")
     
     # Calculate and return the cosine similarity
-    return cosine_similarity(vec_a, vec_b)
+    return 1-cosine_similarity(vec_a, vec_b)
 
 # Example usage
 person_a = {

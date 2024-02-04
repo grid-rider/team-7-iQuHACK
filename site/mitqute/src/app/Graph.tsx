@@ -64,6 +64,19 @@ const Graph: React.FC<GraphProps> = ({ elements, userEmail }) => {
       },
     });
 
+    cy.on('layoutstop', () => {
+        const userNode = cy.elements(`node[id="${userEmail}"]`);
+  
+        if (userNode) {
+          cy.animate({
+            center: { eles: userNode },
+            zoom: 2 // Adjust zoom level as needed
+          }, {
+            duration: 1000
+          });
+        }
+    });
+
     return () => {
       cy.destroy();
     };
