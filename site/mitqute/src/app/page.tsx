@@ -139,6 +139,16 @@ const Home: React.FC = () => {
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-400 mx-auto"></div>
           <h2 className="text-gray-300 text-xl font-semibold mt-5">Quantum entanglement is in progress...</h2>
         </div>
+      ) : results && matchEmail === "" ? (
+        <div className="text-center p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl">
+          <h2 className="text-3xl font-bold mb-4">An Apology from MITqute</h2>
+          <p className="text-md mb-5">It appears that our quantum algorithms have not found a match for you this time. We deeply apologize for any disappointment this may cause.</p>
+          <p className="text-md mb-5">As pioneers in quantum-assisted matchmaking, we understand that our technology is not perfect. Being the first time we've run a dating app on quantum computing, there are bound to be learnings and improvements to be made.</p>
+          <p className="text-md mb-5">We are continuously working to enhance our algorithms and hope that you'll give us another chance in the future. Your experience and feedback are invaluable to us as we strive to create more meaningful connections.</p>
+          <p className="text-md mb-5">Thank you for your understanding and patience.</p>
+          <p className="text-md">Sincerely,</p>
+          <p className="text-md font-semibold">MIT qupid</p>
+        </div>
       ) : results ? (
         <div className="text-center p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl">
           <h2 className="text-3xl font-bold mb-4">Quantum Match Found!</h2>
