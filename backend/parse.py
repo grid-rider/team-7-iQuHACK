@@ -77,33 +77,33 @@ def calculate_and_print_similarities(participants: Dict[str, List[Dict]]):
         print(f"Total non-positive similarity pairs: {non_positive_similarity_count}")
         print(f"Total high compatibility pairs (similarity > 0.9): {high_compatibility_count}")
 
-# def load_csv_and_group_by_age_preference_and_email(filename: str) -> Dict[str, Dict[str, List[Dict]]]:
-#     groups = {"mit": {}, "external": {}}
-#     participants = []  # Store all participants for mutual comparison
+def load_csv_and_group_by_age_preference_and_email(filename: str) -> Dict[str, Dict[str, List[Dict]]]:
+    groups = {"mit": {}, "external": {}}
+    participants = []  # Store all participants for mutual comparison
 
-#     with open(filename, mode='r', encoding='utf-8') as file:
-#         reader = csv.DictReader(file)
-#         print(f"Reader fieldnames: {reader.fieldnames}")
-#         for row in reader:
-#             participants.append({
-#                 "Nickname": row["nickname"],
-#                 "Email": row["Email"],
-#                 "Gender": row["Gender"],
-#                 "Gender Preference": row["Gender Preference"],
-#                 "Age": int(row["Age"]),
-#                 "Age Preference Range": parse_age_range(row["Age Preference Range (Format example: 20-23)"]),
-#                 "Responses": [response_to_vector(row[question]) for question in reader.fieldnames[7:]],
-#             })
+    with open(filename, mode='r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        print(f"Reader fieldnames: {reader.fieldnames}")
+        for row in reader:
+            participants.append({
+                "Nickname": row["nickname"],
+                "Email": row["Email"],
+                "Gender": row["Gender"],
+                "Gender Preference": row["Gender Preference"],
+                "Age": int(row["Age"]),
+                "Age Preference Range": parse_age_range(row["Age Preference Range (Format example: 20-23)"]),
+                "Responses": [response_to_vector(row[question]) for question in reader.fieldnames[7:]],
+            })
 
-#     # for person in participants:
-#     #     domain_group = group_by_email_domain(person)
-#     #     for other in participants:
-#     #         if person == other:
-#     #             continue  # Skip self-comparison
-#     #         if check_mutual_age_preference(person["Age"], person["Age Preference Range"], other["Age"], other["Age Preference Range"]):
-#     #             group_key = f"{person['Age Preference Range'][0]}-{person['Age Preference Range'][1]}"
-#     #             groups[domain_group].setdefault(group_key, []).append(person)
-#     #             break  # Found a mutual match, no need to check further
+    # for person in participants:
+    #     domain_group = group_by_email_domain(person)
+    #     for other in participants:
+    #         if person == other:
+    #             continue  # Skip self-comparison
+    #         if check_mutual_age_preference(person["Age"], person["Age Preference Range"], other["Age"], other["Age Preference Range"]):
+    #             group_key = f"{person['Age Preference Range'][0]}-{person['Age Preference Range'][1]}"
+    #             groups[domain_group].setdefault(group_key, []).append(person)
+    #             break  # Found a mutual match, no need to check further
             
         
     def key_exists(key, dict: dict) -> bool:
@@ -188,21 +188,21 @@ def response_to_vector(response: str) -> int:
     return 0
 
 
-if __name__ == "__main__":
-    filename = "./backend/data/9_19_responses.csv"
-    # all_groups = load_csv_and_group_by_age_preference_and_email(filename)
-    participants = load_participants(filename)
-    calculate_and_print_similarities(participants)
+# if __name__ == "__main__":
+#     filename = "./backend/data/9_19_responses.csv"
+#     # all_groups = load_csv_and_group_by_age_preference_and_email(filename)
+#     participants = load_participants(filename)
+#     calculate_and_print_similarities(participants)
 
-    # # Iterate through each group to calculate pairwise similarity scores
-    # for domain, age_groups in all_groups.items():
-    #     print(f"\nDomain: {domain}")
-    #     for age_range, members in age_groups.items():
-    #         print(f"\nAge Range {age_range}: Calculating pairwise similarities among {len(members)} members.")
-    #         for i in range(len(members)):
-    #             for j in range(i + 1, len(members)):  # Ensure we don't compare a person with themselves or repeat pairings
-    #                 person_a = members[i]
-    #                 person_b = members[j]
-    #                 # Calculate similarity score
-    #                 score = normalized_similarity(person_a, person_b)
-    #                 print(f"Similarity between {person_a['Email']} and {person_b['Email']}: {score}")
+#     # # Iterate through each group to calculate pairwise similarity scores
+#     # for domain, age_groups in all_groups.items():
+#     #     print(f"\nDomain: {domain}")
+#     #     for age_range, members in age_groups.items():
+#     #         print(f"\nAge Range {age_range}: Calculating pairwise similarities among {len(members)} members.")
+#     #         for i in range(len(members)):
+#     #             for j in range(i + 1, len(members)):  # Ensure we don't compare a person with themselves or repeat pairings
+#     #                 person_a = members[i]
+#     #                 person_b = members[j]
+#     #                 # Calculate similarity score
+#     #                 score = normalized_similarity(person_a, person_b)
+#     #                 print(f"Similarity between {person_a['Email']} and {person_b['Email']}: {score}")

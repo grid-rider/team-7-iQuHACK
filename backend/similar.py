@@ -1,6 +1,7 @@
 import numpy as np
 from numpy.linalg import norm
 from typing import Dict, Tuple
+from PersonMap import Person
 
 def cosine_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
     """Calculate the cosine similarity between two vectors."""
@@ -21,15 +22,18 @@ def check_dealbreakers(person_a: Dict, person_b: Dict) -> bool:
     
     return True
 
-def normalized_similarity(person_a: Dict, person_b: Dict) -> float:
+def normalized_similarity(person_a: Person, person_b: Person) -> float:
     """Calculate a normalized similarity score between two people, taking into account dealbreakers."""
     # If there are dealbreakers, return a negative score
+    person_a_response = person_a.survey_response
+    person_b_response = person_b.survey_response
+
     if not check_dealbreakers(person_a, person_b):
         return -1.0
     
     # Convert response lists to numpy arrays for cosine similarity calculation
-    vec_a = np.array(person_a["Responses"])
-    vec_b = np.array(person_b["Responses"])
+    vec_a = np.array(person_a_response["Responses"])
+    vec_b = np.array(person_b_response["Responses"])
     print(f"vec_a: {vec_a}")
     print(f"vec_b: {vec_b}")
     
@@ -54,5 +58,5 @@ person_b = {
 }
 
 # Calculate normalized similarity
-similarity_score = normalized_similarity(person_a, person_b)
-print(f"Normalized similarity score: {similarity_score}")
+# similarity_score = normalized_similarity(person_a, person_b)
+# print(f"Normalized similarity score: {similarity_score}")

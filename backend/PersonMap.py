@@ -4,8 +4,8 @@ from typing import (
     List
 )
 import numpy as np
+from numpy.linalg import norm
 import uuid
-
     
 
 class Person: 
@@ -19,6 +19,8 @@ class Person:
         """
         self.id = str(uuid.uuid4())
         self.survey_response = survey_response
+        
+        
         
         
 
@@ -47,7 +49,7 @@ class PersonMap:
         self.simalarity_threshold = simalarity_threshold 
         
         self.people = [Person(response) for response in survey_responses]
-        self.vertices = [person.id for person in self.people] # e.g. ["256aae76-f3f3-4d55-a212-b16eb73e4e13", "264693ac-47e8-4f95-a4ad-7198b4c42026",...]
+        self.vertices = [person.survey_response["Email"] for person in self.people] # e.g. ["256aae76-f3f3-4d55-a212-b16eb73e4e13", "264693ac-47e8-4f95-a4ad-7198b4c42026",...]
         self.edges = self._get_edges(self.people) 
 
             
@@ -62,23 +64,23 @@ class PersonMap:
         Returns:
             dict: Dictionary of edges, e.g. {("256aae76-f3f3-4d55-a212-b16eb73e4e13","256aae76-f3f3-4d55-a212-b16eb73e4e13"):5,...}
         """
-        def people_simalarity(person1: Person, person2: Person) -> float: 
-            """
-            Vector simalarity computes simalarity of 2 N dimensional vectors
+        # def people_simalarity(person1: Person, person2: Person) -> float: 
+        #     """
+        #     Vector simalarity computes simalarity of 2 N dimensional vectors
 
-            Args:
-                vector1 (): _description_
-                vector2 (_type_): _description_
+        #     Args:
+        #         vector1 (): _description_
+        #         vector2 (_type_): _description_
 
-            Returns:
-                float: _description_
-            """
-            import random
+        #     Returns:
+        #         float: _description_
+        #     """
+        #     import random
             
-            if(not isinstance(person1, Person) and not isinstance(person2, Person)):
-                raise TypeError("Invalid argument type")
+        #     if(not isinstance(person1, Person) and not isinstance(person2, Person)):
+        #         raise TypeError("Invalid argument type")
             
-            return np.random.rand()
+        #     return np.random.rand()
         
         _vertices = {}
         _len_people = len(people)
@@ -89,11 +91,12 @@ class PersonMap:
                 _person1 = people[i]
                 _person2 = people[j]
                 
-                simalarity = people_simalarity(_person1, _person2)
+                simalarity = self.normalized_similarity(_person1, _person2)
                 
                 #Threshold
-                if(simalarity > self.simalarity_threshold): 
-                    _vertices[(_person1.id, _person2.id)] = simalarity
+                # if(simalarity > self.simalarity_threshold): 
+
+                _vertices[(_person1.survey_response["Email"], _person2.survey_response["Email"])] = simalarity
                     
         return _vertices
                         
@@ -107,6 +110,45 @@ class PersonMap:
         
         raise IndexError("Id Not Found")
     
+    
+    def normalized_similarity(self, person_a: Person, person_b: Person) -> float:
+        """Calculate a normalized similarity score between two people, taking into account dealbreakers."""
+
+        def check_dealbreakers(person_a: dict, person_b: dict) -> bool:
+            """Check for dealbreakers in gender preference and age range."""
+            # Gender preference dealbreaker
+            if person_a["Gender Preference"] != person_b["Gender"] or person_b["Gender Preference"] != person_a["Gender"]:
+                return False
+            
+            # Age range dealbreaker
+            person_a_pref_start, person_a_pref_end = person_a["Age Preference Range"]
+            person_b_pref_start, person_b_pref_end = person_b["Age Preference Range"]
+            if not (person_a_pref_start <= person_b["Age"] <= person_a_pref_end and
+                    person_b_pref_start <= person_a["Age"] <= person_b_pref_end):
+                return False
+            
+            return True
+
+        def cosine_similarity(vec_a: np.ndarray, vec_b: np.ndarray) -> float:
+            """Calculate the cosine similarity between two vectors."""
+            return np.dot(vec_a, vec_b) / (norm(vec_a) * norm(vec_b))
+
+        # If there are dealbreakers, return a negative score
+        person_a_response = person_a.survey_response
+        person_b_response = person_b.survey_response
+
+        if not check_dealbreakers(person_a_response, person_b_response):
+            return -1.0
+        
+        # Convert response lists to numpy arrays for cosine similarity calculation
+        vec_a = np.array(person_a_response["Responses"])
+        vec_b = np.array(person_b_response["Responses"])
+        print(f"vec_a: {vec_a}")
+        print(f"vec_b: {vec_b}")
+        
+        # Calculate and return the cosine similarity
+        return cosine_similarity(vec_a, vec_b)
+
     def is_empty(self): 
         return (len(self.edges) == 0)
         
