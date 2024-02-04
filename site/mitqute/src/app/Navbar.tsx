@@ -3,10 +3,10 @@ import Link from 'next/link';
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="flex justify-between items-center px-8 py-4 bg-gray-800 text-white w-full fixed top-0 left-0">
-      <Link href="/">
+    <nav className="flex justify-between items-center px-8 py-4 bg-gray-800 text-white w-full fixed top-0 left-0 font-bold">
+      <Link href="/" className="font-honk">
         {/* <a className="text-xl font-bold">MITqute 🌌</a> */}
-        MITqute 🌌
+        MITqute
       </Link>
       <div className="flex gap-4">
         {/* <Link href="/">
