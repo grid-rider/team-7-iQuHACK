@@ -1,6 +1,6 @@
 # MITqute 🚀
 
-> Let's get quantumly entangled!
+> Let's get entangled!
 
 **MITqute** is where quantum computing flirts with matchmaking. Say goodbye to mundane swipes based on superficial likes; it's time for connections that resonate on a quantum level!
 
