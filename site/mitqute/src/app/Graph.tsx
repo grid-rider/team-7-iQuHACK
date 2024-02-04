@@ -88,7 +88,7 @@ const Graph: React.FC<GraphProps> = ({ elements, userEmail }) => {
         Your Quantum Connection Network
       </h2>
       <div className="text-center mb-4 text-gray-200">
-        Explore the entangled web of connections.
+        Hold and drag to explore the entangled web of connections.
       </div>
       <div ref={cyRef} style={{height: '600px', width: '600px'}} className="mx-auto shadow rounded-lg p-4"></div>
       <div className="mt-4 text-gray-600 text-center">
