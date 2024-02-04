@@ -37,7 +37,7 @@ const Graph: React.FC<GraphProps> = ({ elements, userEmail }) => {
             'label': 'data(weight)',
             'text-rotation': 'autorotate',
             'color': '#fff',
-            'text-margin-y': '-10px',
+            'text-margin-y': -10,
           },
         },
         {
@@ -70,15 +70,21 @@ const Graph: React.FC<GraphProps> = ({ elements, userEmail }) => {
   }, [elements, userEmail]);
 
   return (
-    <>
-      <div style={{ width: '600px', height: '600px' }} ref={cyRef}></div>
-      <div style={{ marginTop: '20px', color: '#666', textAlign: 'center' }}>
-        <p><strong>Legend:</strong></p>
+    <div className="w-full">
+      <h2 className="text-2xl font-semibold text-center text-white mt-12 mb-2">
+        Your Quantum Connection Network
+      </h2>
+      <div className="text-center mb-4 text-gray-200">
+        Explore the entangled web of connections.
+      </div>
+      <div ref={cyRef} style={{height: '600px', width: '600px'}} className="mx-auto shadow rounded-lg p-4"></div>
+      <div className="mt-4 text-gray-600 text-center">
+        <strong>Legend:</strong>
         <p style={{ color: '#28B463' }}>Node with green color is "You"</p>
         <p style={{ color: '#007bff' }}>Edges with blue color represent genuine matches</p>
         <p>Edge labels show the weight or compatibility score</p>
       </div>
-    </>
+    </div>
   );
 };
 
