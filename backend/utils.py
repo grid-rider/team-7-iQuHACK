@@ -5,7 +5,7 @@ from PersonMap import Person
 
 def people_simalarity(person1: Person, person2: Person) -> float: 
     """
-    Vector simalarity computes simalarity of 2 N dimensional vectors
+    Vector simalarity computes similarity of 2 N dimensional vectors
 
     Args:
         vector1 (): _description_
