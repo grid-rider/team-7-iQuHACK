@@ -5,11 +5,24 @@ import numpy as np
 
 def parse_age_range(age_range: str) -> Tuple[int, int]:
     try:
-        start, end = age_range.split('-')
-        return int(start), int(end)
+        # Handle single number age ranges by using it as both lower and upper bounds
+        if age_range.isdigit():
+            age = int(age_range)
+            return age, age
+        elif "-" in age_range:
+            start, end = age_range.split('-')
+            return int(start), int(end)
+        elif age_range.lower() in ["20 and older", "integer", "??"]:
+            # For "20 and older", set a reasonable upper limit or handle as case-specific
+            if age_range.lower() == "20 and older":
+                return 20, 99  # Assuming 99 as an arbitrary upper limit
+            # For ambiguous or invalid inputs, return a default range or flag as invalid
+            else:
+                print(f"Invalid age range: {age_range}")
+                return 0, 0  # Invalid or ambiguous ranges are set to (0, 0)
     except ValueError:
         print(f"Invalid age range: {age_range}")
-        return (0, 0)
+        return 0, 0
 
 def check_mutual_age_preference(person_age: int, person_pref: Tuple[int, int], other_age: int, other_pref: Tuple[int, int]) -> bool:
     """Checks if both individuals' ages fall within each other's preferred age ranges."""
