@@ -4,15 +4,25 @@ import { FaClipboard, FaCheck } from "react-icons/fa"; // Ensure react-icons is 
 import Navbar from "./Navbar";
 // Import the Graph component
 import Graph from './Graph';
+import { pairs } from './edges';
 
 // Define your graph elements (nodes and edges) based on your matches
-const elements = [
-  { data: { id: 'Alice' } },
-  { data: { id: 'Bob' } },
-  { data: { id: 'Charlie' } },
-  { data: { id: 'ab', source: 'Alice', target: 'Bob', highlight: 1, weight: '95%' } },
-  { data: { id: 'bc', source: 'Bob', target: 'Charlie', weight: '85%' } },
-];
+// const elements = [
+//   { data: { id: 'Alice' } },
+//   { data: { id: 'Bob' } },
+//   { data: { id: 'Charlie' } },
+//   { data: { id: 'ab', source: 'Alice', target: 'Bob', highlight: 1, weight: '95%' } },
+//   { data: { id: 'bc', source: 'Bob', target: 'Charlie', weight: '85%' } },
+// ];
+
+const nodes = new Set<string>();
+const edges = pairs.map(([source, target], index) => {
+  nodes.add(source);
+  nodes.add(target);
+  return { data: { id: `edge${index}`, source, target, label: `${index * 10}%` }}; // Example edge label
+});
+
+const elements = Array.from(nodes).map(node => ({ data: { id: node } })).concat(edges);
 
 const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -34,16 +44,25 @@ const Home: React.FC = () => {
   const handleCheckMatch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+  
+    // Assuming your email is userEmail
+    const userEmail = email; // Use state email or a specific one if static
+  
+    // Simulate finding a match by looking through pairs
+    const myPair = pairs.find(pair => pair.includes(userEmail));
+    const matchedEmail = myPair ? myPair.find(email => email !== userEmail) : "No match found";
+  
     setTimeout(() => {
       setLoading(false);
       setResults(true);
       const randomIndex = Math.floor(Math.random() * pickupLines.length);
       setPickupLine(pickupLines[randomIndex]);
       setSimilarityPercentage(Math.random() * (100 - 85) + 85); // Simulate a similarity percentage
-      // Set match email from backend here
+      setMatchEmail(matchedEmail || "No match found"); // Update the match email with the actual matched person's email
       setCopied(false); // Reset copy state
     }, 2000);
   };
+  
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
 
@@ -78,7 +97,7 @@ const Home: React.FC = () => {
             {copied ? <FaCheck className="mr-2"/> : <FaClipboard className="mr-2"/>}
             {copied ? "Copied!" : "Copy Pickup Line"}
           </button>
-          <Graph elements={elements} userEmail={'Alice'} />
+          <Graph elements={elements} userEmail={email} />
         </div>
       ) : (
         <form onSubmit={handleCheckMatch} className="flex flex-col items-center w-full max-w-sm mt-5">
