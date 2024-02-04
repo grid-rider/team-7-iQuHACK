@@ -22,7 +22,7 @@ Brewing the potion involves:
 
 ## Wanna Be Part of Our Experiment?
 
-Ready to dive into the quantum dating pool? Fill out our [MITqute Form](https://docs.google.com/forms/d/169_t1fgWlGfqXVa_TL5lntZ2tGUj1siZT_5vh6gidRo/edit#responses) and let the quantum forces guide you to your match!
+Ready to dive into the quantum dating pool? Fill out our [MITqute Form](https://forms.gle/C2quqrLv36Dp1Yea9) and let the quantum forces guide you to your match!
 
 ## Timeline 📅
 
