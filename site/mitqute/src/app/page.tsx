@@ -140,7 +140,7 @@ const Home: React.FC = () => {
           <h2 className="text-gray-300 text-xl font-semibold mt-5">Quantum entanglement is in progress...</h2>
         </div>
       ) : results && matchEmail === "" ? (
-        <div className="text-center p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl">
+        <div className="text-center p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl w-full md:w-1/2">
           <h2 className="text-3xl font-bold mb-4">An Apology from MITqute</h2>
           <p className="text-md mb-5">It appears that our quantum algorithms have not found a match for you this time. We deeply apologize for any disappointment this may cause.</p>
           <p className="text-md mb-5">As pioneers in quantum-assisted matchmaking, we understand that our technology is not perfect. Being the first time we've run a dating app on quantum computing, there are bound to be learnings and improvements to be made.</p>
