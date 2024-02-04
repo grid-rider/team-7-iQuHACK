@@ -56,26 +56,24 @@ const Home: React.FC = () => {
     e.preventDefault();
     setLoading(true);
   
-    // Simulate finding a match and the similarity percentage
+    const lowerCaseEmail = email.toLowerCase();
+  
     setTimeout(() => {
       setLoading(false);
       setResults(true);
   
-      // Assuming 'pairs' is of type Pair[] and 'email' is of type string
-      const myPair = pairs.find(pair => pair.includes(email));
-      const matchedEmail = myPair?.find(e => e !== email) || "";
-  
-      console.log("found pair", edges.find(([source, target]) => 
-        (source === email && target === matchedEmail) || 
-        (target === email && source === matchedEmail)
-      ));
+      const myPair = pairs.find(pair => pair.map(e => typeof e === 'string' ? e.toLowerCase() : e).includes(lowerCaseEmail));
+      const matchedEmail = myPair?.find(e => typeof e === 'string' && e.toLowerCase() !== lowerCaseEmail) || "";
   
       let pairsFoundInEdges = 0;
       let pairsNotFoundInEdges = 0;
   
       pairs.forEach(pair => {
-        const [email1, email2] = pair;
-        if (edges.some(([source, target]) => (source === email1 && target === email2) || (source === email2 && target === email1))) {
+        const [email1, email2] = pair.map(e => typeof e === 'string' ? e.toLowerCase() : e);
+        if (edges.some(([source, target]) => 
+          typeof source === 'string' && typeof target === 'string' && 
+          ((source.toLowerCase() === email1 && target.toLowerCase() === email2) || 
+          (source.toLowerCase() === email2 && target.toLowerCase() === email1)))) {
           pairsFoundInEdges++;
         } else {
           pairsNotFoundInEdges++;
@@ -86,41 +84,48 @@ const Home: React.FC = () => {
       console.log("Pairs not found in edges:", pairsNotFoundInEdges);
   
       const similarityScore = edges.find(([source, target]) => 
-        (source === email && target === matchedEmail) || 
-        (target === email && source === matchedEmail)
+        typeof source === 'string' && typeof target === 'string' &&
+        ((source.toLowerCase() === lowerCaseEmail && target.toLowerCase() === matchedEmail) || 
+        (target.toLowerCase() === lowerCaseEmail && source.toLowerCase() === matchedEmail))
       )?.[2] as number ?? 0;
-      
-      // Update states
+  
       setMatchEmail(matchedEmail);
       setSimilarityPercentage(similarityScore ? (1-similarityScore) * 100 : 0);
       setPickupLine(pickupLines[Math.floor(Math.random() * pickupLines.length)]);
       setCopied(false);
   
-      // Construct graph elements
       const nodes = new Set<string>();
       edges.forEach(([source, target]) => {
-        nodes.add(source as string);
-        nodes.add(target as string);
+        if (typeof source === 'string' && typeof target === 'string') {
+          nodes.add(source.toLowerCase());
+          nodes.add(target.toLowerCase());
+        }
       });
   
       const cyEdges = edges.map(([source, target, weight], index) => {
-        const isHighlight = pairs.some(pair => pair.includes(source as string) && pair.includes(target as string));
+        if (typeof source === 'string' && typeof target === 'string') {
+          const isHighlight = pairs.some(pair => 
+            pair.map(e => typeof e === 'string' ? e.toLowerCase() : e).includes(source.toLowerCase()) && 
+            pair.map(e => typeof e === 'string' ? e.toLowerCase() : e).includes(target.toLowerCase())
+          );
   
-        return {
-          data: {
-            id: `e${index}`,
-            source,
-            target,
-            label: `${((1-(weight as number)) * 100).toFixed(0)}%`,
-            highlight: isHighlight ? 1 : 0,
-          }
-        };
-      });
+          return {
+            data: {
+              id: `e${index}`,
+              source: source.toLowerCase(),
+              target: target.toLowerCase(),
+              label: `${((1-(weight as number)) * 100).toFixed(0)}%`,
+              highlight: isHighlight ? 1 : 0,
+            }
+          };
+        }
+        return null;
+      }).filter(edge => edge !== null) as GraphElement[]; // Explicit type assertion here
   
       const cyNodes = Array.from(nodes).map(node => ({ data: { id: node } }));
       setElements([...cyNodes, ...cyEdges]);
     }, 2000);
-  };
+  };    
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value);
 
