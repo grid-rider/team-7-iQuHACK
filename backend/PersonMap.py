@@ -3,6 +3,7 @@
 from typing import (
     List
 )
+import numpy as np
 import uuid
 
     
@@ -40,7 +41,7 @@ class PersonMap:
             TypeError: If the survey responses are of invalid type
         """
         
-        if(isinstance(survey_responses, List[dict])): 
+        if(not isinstance(survey_responses, list)): 
             raise TypeError("Invalid Argument types")
         
         self.simalarity_threshold = simalarity_threshold 
@@ -77,7 +78,7 @@ class PersonMap:
             if(not isinstance(person1, Person) and not isinstance(person2, Person)):
                 raise TypeError("Invalid argument type")
             
-            return random.randint(0,1)
+            return np.random.rand()
         
         _vertices = {}
         _len_people = len(people)
@@ -105,7 +106,6 @@ class PersonMap:
                 return person     
         
         raise IndexError("Id Not Found")
-                    
     
     def is_empty(self): 
         return (len(self.edges) == 0)

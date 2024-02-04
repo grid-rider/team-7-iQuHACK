@@ -3,10 +3,12 @@
 from Matcher import Matcher
 import csv 
 
-responses = {}
-with open('./backend/data/responses.csv', newline='') as csvfile:
+responses = []
+with open('./backend/data/9_19_responses.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        print(row['nickname'], row['Email'])
-# Matcher()
+        responses.append(row)
+
+matchmaker = Matcher(responses)
+matchmaker.findmatches()
 

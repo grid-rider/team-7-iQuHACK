@@ -16,8 +16,8 @@ def people_simalarity(person1: Person, person2: Person) -> float:
             float: _description_
         """
         
-        if(not isinstance(person1, Person) and not isinstance(person2, Person)):
-            raise TypeError("Invalid argument type")
-        
-        return random.randint(0,1)
-        
+    if(not isinstance(person1, Person) and not isinstance(person2, Person)):
+        raise TypeError("Invalid argument type")
+    
+    return random.randint(0,1)
+    

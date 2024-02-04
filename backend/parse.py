@@ -131,7 +131,7 @@ def response_to_vector(response: str) -> int:
     return mapping.get(response, 0)
 
 if __name__ == "__main__":
-    filename = "./data/9_19_responses.csv"
+    filename = "./backend/data/9_19_responses.csv"
     all_groups = load_csv_and_group_by_age_preference_and_email(filename)
     for domain, age_groups in all_groups.items():
         print(f"\nDomain: {domain}")
