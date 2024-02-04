@@ -38,35 +38,15 @@ class Matcher:
 
             while(counter != len(_filtered_responses)):
                 _subset = []
-                male_counter = 0
-                female_counter = 0
                 for x in range(len(_filtered_responses)): 
-
-                    if (male_counter<2 and _filtered_responses[x]!= None and _filtered_responses[x]["Gender"] == "Male"):
+                    if (_filtered_responses[x]!= None):
                         _subset.append(_filtered_responses[x])
                         _filtered_responses[x] = None
-                        male_counter+=1
-                    if (female_counter<2 and _filtered_responses[x]!= None and _filtered_responses[x]["Gender"] == "Female"):
-                        _subset.append(_filtered_responses[x])
-                        _filtered_responses[x] = None
-                        female_counter+=1                        
-                    counter +=1
+                        counter +=1
                     #Breaking condition 
-                    if(male_counter==2 and female_counter==2):
+                    if(len(_subset) == 4):
+                        
                         break
-
-                #<2 guys left over or <2 girls left over, just assign groups of 4 directly
-                while(len(_filtered_responses)-counter > 0):
-                    edgecounter = 0
-                    for x in range(counter, len(_filtered_responses)): 
-                        if (_filtered_responses[x]!= None):
-                            _subset.append(_filtered_responses[x])
-                            _filtered_responses[x] = None
-                            edgecounter +=1
-                            counter +=1
-                        #Breaking condition 
-                        if(edgecounter == 4):
-                            break
 
                 #3 people left over   
                 if((len(_filtered_responses) - counter) == 3):
@@ -86,32 +66,13 @@ class Matcher:
                 
                 #1 person left over
                 if((len(_filtered_responses) - counter) == 1):
-                    return 
+                    return                         
 
-
-                                       
-                # Ensure that at least one subpair has a similarity score between 0 and 1
-                subpair_with_similarity = False
-                for subpair in _subset:
-                    for other_subpair in _subset:
-                        if subpair != other_subpair:
-                            similarity_score = normalized_similarity(Person(subpair), Person(other_subpair))
-                            if 0 < similarity_score < 1:
-                                subpair_with_similarity = True
-                                break
-                    if subpair_with_similarity:
-                        break
-
-                # If no subpair has a similarity score between 0 and 1, retry with a different set
-                if not subpair_with_similarity:
-                    _filtered_responses = copy.deepcopy(self.survey_responses)
-                    counter = 0
-                else:
-                    # Continue processing the subpair
-                    _map = PersonMap(
-                        survey_responses=_subset,
-                        simalarity_threshold=0  # You can set the similarity threshold here
-                    )
+                # Continue processing the subpair
+                _map = PersonMap(
+                    survey_responses=_subset,
+                    simalarity_threshold=0  # You can set the similarity threshold here
+                )
 
                 if(len(_map.edges) > 10):
                     print("Warning")

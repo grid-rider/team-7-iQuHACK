@@ -1,11 +1,11 @@
 # @Author: Armin Ulrich
 
-from Matcher import Matcher
+from Matcher2 import Matcher
 from parse import response_to_vector, parse_age_range
 import csv 
 
 form_submissions = []
-with open('./data/9_19_responses.csv', newline='') as csvfile:
+with open('./data/gay_male.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         domain_group = "mit" if row["Email"].endswith("@mit.edu") else "external"
@@ -15,7 +15,6 @@ with open('./data/9_19_responses.csv', newline='') as csvfile:
                 response = response_to_vector(row[question])
                 response_vector.append(response)
         participant = {
-            "Nickname": row["nickname"],
             "Email": row["Email"],
             "Gender": row["Gender"],
             "Gender Preference": row["Gender Preference"],

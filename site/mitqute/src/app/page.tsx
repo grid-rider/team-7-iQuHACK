@@ -143,7 +143,10 @@ const Home: React.FC = () => {
         <div className="text-center p-10 bg-gray-800 text-gray-200 rounded-lg shadow-xl">
           <h2 className="text-3xl font-bold mb-4">Quantum Match Found!</h2>
           <p className="text-md mb-1">Match's Email: <span className="font-semibold">{matchEmail}</span></p>
-          <p className="text-md mb-2">Compatibility: <span className="font-semibold">{similarityPercentage.toFixed(2)}%</span></p>
+          {
+            similarityPercentage !== 0 ? <p className="text-md mb-2">Compatibility: <span className="font-semibold">{similarityPercentage.toFixed(2)}%</span></p>
+            : <p className="text-md mb-2">Compatibility: <span className="font-semibold">low - medium confidence</span></p>
+          }
           <div className="bg-gray-700 p-4 rounded-lg shadow-inner">
             <p className="text-lg mb-2">Spark a conversation with this quantum pickup line:</p>
             <p className="text-green-400 text-lg font-medium">"{pickupLine}"</p>

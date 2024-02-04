@@ -40,7 +40,7 @@ def csv_clean(csv_file_src: str):
 
             
             
-# csv_clean("./backend/data/connections.csv")
+csv_clean("./data/connections.csv")
 
 
 from PersonMap import PersonMap
