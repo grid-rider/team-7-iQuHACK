@@ -138,7 +138,7 @@ class PersonMap:
         person_b_response = person_b.survey_response
 
         if not check_dealbreakers(person_a_response, person_b_response):
-            return -1.0
+            return 10.0
         
         # Convert response lists to numpy arrays for cosine similarity calculation
         vec_a = np.array(person_a_response["Responses"])
@@ -147,7 +147,7 @@ class PersonMap:
         print(f"vec_b: {vec_b}")
         
         # Calculate and return the cosine similarity
-        return cosine_similarity(vec_a, vec_b)
+        return 1-cosine_similarity(vec_a, vec_b)
 
     def is_empty(self): 
         return (len(self.edges) == 0)

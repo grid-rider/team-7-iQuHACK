@@ -35,7 +35,7 @@ class Matcher:
 
         
             _filtered_responses = copy.deepcopy(self.survey_responses)
-            _probability_per_iteration = 0.9
+            _probability_per_iteration = 0.6
             counter = 0
 
             while(counter != len(_filtered_responses)):
