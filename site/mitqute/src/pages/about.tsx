@@ -7,7 +7,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 to-gray-900 text-white py-12">
       <Navbar />
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-4xl mx-auto px-4 mt-8">
         <h1 className="text-4xl font-bold mb-4">About MITqute</h1>
         <p className="mb-4 text-lg">
           At MITqute, we're pioneering the intersection of quantum computing and social connectivity to bring forth a new era of matchmaking.

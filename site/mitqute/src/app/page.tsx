@@ -2,6 +2,17 @@
 import React, { useState, FormEvent, ChangeEvent } from "react";
 import { FaClipboard, FaCheck } from "react-icons/fa"; // Ensure react-icons is installed
 import Navbar from "./Navbar";
+// Import the Graph component
+import Graph from './Graph';
+
+// Define your graph elements (nodes and edges) based on your matches
+const elements = [
+  { data: { id: 'Alice' } },
+  { data: { id: 'Bob' } },
+  { data: { id: 'Charlie' } },
+  { data: { id: 'ab', source: 'Alice', target: 'Bob', highlight: 1, weight: '95%' } },
+  { data: { id: 'bc', source: 'Bob', target: 'Charlie', weight: '85%' } },
+];
 
 const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -67,6 +78,7 @@ const Home: React.FC = () => {
             {copied ? <FaCheck className="mr-2"/> : <FaClipboard className="mr-2"/>}
             {copied ? "Copied!" : "Copy Pickup Line"}
           </button>
+          <Graph elements={elements} userEmail={'Alice'} />
         </div>
       ) : (
         <form onSubmit={handleCheckMatch} className="flex flex-col items-center w-full max-w-sm mt-5">
