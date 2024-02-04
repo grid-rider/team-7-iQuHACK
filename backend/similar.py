@@ -30,6 +30,8 @@ def normalized_similarity(person_a: Dict, person_b: Dict) -> float:
     # Convert response lists to numpy arrays for cosine similarity calculation
     vec_a = np.array(person_a["Responses"])
     vec_b = np.array(person_b["Responses"])
+    print(f"vec_a: {vec_a}")
+    print(f"vec_b: {vec_b}")
     
     # Calculate and return the cosine similarity
     return cosine_similarity(vec_a, vec_b)
