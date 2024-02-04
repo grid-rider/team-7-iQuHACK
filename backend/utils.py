@@ -1,0 +1,20 @@
+from typing import (
+    List
+)
+from PersonMap import Person
+
+def people_simalarity(person1: Person, person2: Person) -> float: 
+    """
+    Vector simalarity computes simalarity of 2 N dimensional vectors
+
+    Args:
+        vector1 (): _description_
+        vector2 (_type_): _description_
+
+    Returns:
+        float: _description_
+    """
+    
+    if(not isinstance(person1, Person) and not isinstance(person2, Person)):
+        pass
+    

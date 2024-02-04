@@ -15,9 +15,9 @@ from typing import(
 
 from backend.PersonMap import Person, PersonMap
 
-class Match: 
+class Matcher: 
     
-    def __init__(self, people: List[Person]):
+    def __init__(self, people: List[Person], connections):
         self.map = PersonMap()
     
     def findmatch(self, person: Person) -> Person: 
