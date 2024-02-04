@@ -38,7 +38,7 @@ class PersonMap:
         def _get_vertices(self, people: List[Person]) -> map: 
             _len_people = len(people)
             for i in range(_len_people): 
-                for j in range(i, _len_people):
+                for j in range(i+1, _len_people):
                     simalarity = people_simalarity(person, comparison_person)
                     
                     #Threshold
