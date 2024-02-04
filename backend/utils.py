@@ -4,11 +4,9 @@ from typing import (
 from PersonMap import Person
 import random
 
-class Utils:
-    @staticmethod
-    def people_simalarity(person1: Person, person2: Person) -> float: 
-        """
-        Vector simalarity computes simalarity of 2 N dimensional vectors
+def people_simalarity(person1: Person, person2: Person) -> float: 
+    """
+    Vector simalarity computes similarity of 2 N dimensional vectors
 
         Args:
             vector1 (): _description_

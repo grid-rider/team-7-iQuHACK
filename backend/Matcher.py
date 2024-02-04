@@ -71,13 +71,8 @@ class Matcher:
                 qubo_converter = QuadraticProgramToQubo()
                 qubo = qubo_converter.convert(qp)
 
-                # # Set the random seed for reproducible results
-                # algorithm_globals.random_seed = 10598
-
-                # Assuming `qubo` is your QuadraticProgram object from before
-                # First, convert the QUBO into a PauliSumOp for QAOA
-                qubo_converter = QuadraticProgramToQubo()
-                qubo_problem = qubo_converter.convert(qubo)
+        # # Set the random seed for reproducible results
+        # algorithm_globals.random_seed = 10598
 
                 # Initialize the optimizer
                 optimizer = COBYLA()
