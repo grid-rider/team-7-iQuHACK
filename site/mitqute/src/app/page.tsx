@@ -25,6 +25,15 @@ import '../app/globals.css';
 
 // const elements = Array.from(nodes).map(node => ({ data: { id: node } })).concat(edges);
 
+interface ElementData {
+  id: string;
+  // Include other properties here as needed, e.g., source, target, label, highlight
+}
+
+interface GraphElement {
+  data: ElementData;
+}
+
 const Home: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [matchEmail, setMatchEmail] = useState<string>("match@example.com"); // Placeholder for the match's email
@@ -33,7 +42,7 @@ const Home: React.FC = () => {
   const [pickupLine, setPickupLine] = useState<string>("");
   const [similarityPercentage, setSimilarityPercentage] = useState<number>(0);
   const [copied, setCopied] = useState<boolean>(false); // State to manage copy feedback
-  const [elements, setElements] = useState<ElementDefinition[]>([]);
+  const [elements, setElements] = useState<GraphElement[]>([]);
 
   const pickupLines = [
     "If love is a complex vector space, consider me an eigenstate of desire for you.",
@@ -51,63 +60,63 @@ const Home: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       setResults(true);
-      
-      // Find user's pair
+  
+      // Assuming 'pairs' is of type Pair[] and 'email' is of type string
       const myPair = pairs.find(pair => pair.includes(email));
-      const matchedEmail = myPair?.find(e => e !== email);
-
+      const matchedEmail = myPair?.find(e => e !== email) || "";
+  
       console.log("found pair", edges.find(([source, target]) => 
         (source === email && target === matchedEmail) || 
         (target === email && source === matchedEmail)
       ));
-
+  
       let pairsFoundInEdges = 0;
-    let pairsNotFoundInEdges = 0;
-
-    pairs.forEach(pair => {
-      const [email1, email2] = pair;
-      if (edges.some(([source, target]) => (source === email1 && target === email2) || (source === email2 && target === email1))) {
-        pairsFoundInEdges++;
-      } else {
-        pairsNotFoundInEdges++;
-      }
-    });
-
-    console.log("Pairs found in edges:", pairsFoundInEdges);
-    console.log("Pairs not found in edges:", pairsNotFoundInEdges);
-
+      let pairsNotFoundInEdges = 0;
+  
+      pairs.forEach(pair => {
+        const [email1, email2] = pair;
+        if (edges.some(([source, target]) => (source === email1 && target === email2) || (source === email2 && target === email1))) {
+          pairsFoundInEdges++;
+        } else {
+          pairsNotFoundInEdges++;
+        }
+      });
+  
+      console.log("Pairs found in edges:", pairsFoundInEdges);
+      console.log("Pairs not found in edges:", pairsNotFoundInEdges);
+  
       const similarityScore = edges.find(([source, target]) => 
         (source === email && target === matchedEmail) || 
         (target === email && source === matchedEmail)
-      )?.[2];
+      )?.[2] as number ?? 0;
       
       // Update states
-      setMatchEmail(matchedEmail || "No match found");
+      setMatchEmail(matchedEmail);
       setSimilarityPercentage(similarityScore ? (1-similarityScore) * 100 : 0);
       setPickupLine(pickupLines[Math.floor(Math.random() * pickupLines.length)]);
       setCopied(false);
-
+  
       // Construct graph elements
       const nodes = new Set<string>();
       edges.forEach(([source, target]) => {
-        nodes.add(source);
-        nodes.add(target);
+        nodes.add(source as string);
+        nodes.add(target as string);
       });
-
+  
       const cyEdges = edges.map(([source, target, weight], index) => {
-        const isHighlight = pairs.some(pair => pair.includes(source) && pair.includes(target));
-
+        const isHighlight = pairs.some(pair => pair.includes(source as string) && pair.includes(target as string));
+  
         return {
           data: {
             id: `e${index}`,
             source,
             target,
-            label: `${((1-weight) * 100).toFixed(0)}%`,
+            label: `${((1-(weight as number)) * 100).toFixed(0)}%`,
             highlight: isHighlight ? 1 : 0,
           }
         };
       });
-
+  
       const cyNodes = Array.from(nodes).map(node => ({ data: { id: node } }));
       setElements([...cyNodes, ...cyEdges]);
     }, 2000);
