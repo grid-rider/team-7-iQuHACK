@@ -47,11 +47,6 @@ qubo = qubo_converter.convert(qp)
 # # Set the random seed for reproducible results
 # algorithm_globals.random_seed = 10598
 
-# Assuming `qubo` is your QuadraticProgram object from before
-# First, convert the QUBO into a PauliSumOp for QAOA
-qubo_converter = QuadraticProgramToQubo()
-qubo_problem = qubo_converter.convert(qubo)
-
 # Initialize the optimizer
 optimizer = COBYLA()
 backend = Aer.get_backend('aer_simulator_statevector')
