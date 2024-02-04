@@ -38,15 +38,34 @@ def load_csv_and_group_by_age_preference_and_email(filename: str) -> Dict[str, D
     
     print(participants)
 
-    for person in participants:
-        domain_group = group_by_email_domain(person)
-        for other in participants:
-            if person == other:
-                continue  # Skip self-comparison
-            if check_mutual_age_preference(person["Age"], person["Age Preference Range"], other["Age"], other["Age Preference Range"]):
-                group_key = f"{person['Age Preference Range'][0]}-{person['Age Preference Range'][1]}"
-                groups[domain_group].setdefault(group_key, []).append(person)
-                break  # Found a mutual match, no need to check further
+    # for person in participants:
+    #     domain_group = group_by_email_domain(person)
+    #     for other in participants:
+    #         if person == other:
+    #             continue  # Skip self-comparison
+    #         if check_mutual_age_preference(person["Age"], person["Age Preference Range"], other["Age"], other["Age Preference Range"]):
+    #             group_key = f"{person['Age Preference Range'][0]}-{person['Age Preference Range'][1]}"
+    #             groups[domain_group].setdefault(group_key, []).append(person)
+    #             break  # Found a mutual match, no need to check further
+            
+        
+    def key_exists(key, dict: dict) -> bool:
+        for temp_key in dict.keys():
+            if(temp_key == key): 
+                return True
+        return False
+    
+    age_groups = {}
+    
+    for i in range(len(participants)):
+        person = participants[i]
+        if(key_exists(person["Age"], age_groups)):
+            age_groups[person["Age"]] += 1
+        else: 
+            age_groups[person["Age"]] = 1
+        
+    print(age_groups)
+    
 
     return groups
 
