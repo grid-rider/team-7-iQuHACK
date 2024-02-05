@@ -13,7 +13,7 @@ Tired of the classic dating scene? Enter quantum computing. Love, like quantum m
 Brewing the potion involves:
 
 - **Quantum Personalities:** Converting your answers into quantum bits, making your profile a quantum state that only the right person can collapse.
-- **Matchmaking Algorithm:** With quantum algorithms, we turn the matchmaking problem into a QUBO and let QAOA work its magic to find your perfect match.
+- **Matchmaking Algorithm:** With quantum algorithms, we reformulate the matchmaking problem with Quadratic Unconstrained Binary Optimization (QUBO) and let the Quantum Approximate Optimization Algorithm (QAOA) work its magic to find your perfect match.
 
 ## Making It Fun 🎉
 
