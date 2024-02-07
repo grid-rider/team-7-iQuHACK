@@ -114,7 +114,7 @@ const Home: React.FC = () => {
               id: `e${index}`,
               source: source.toLowerCase(),
               target: target.toLowerCase(),
-              label: `${((1-(weight as number)) * 100).toFixed(0)}%`,
+              weight: `${((1-(weight as number)) * 100).toFixed(0)}%`,
               highlight: isHighlight ? 1 : 0,
             }
           };
