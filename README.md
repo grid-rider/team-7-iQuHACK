@@ -13,7 +13,7 @@ Tired of the classic dating scene? Enter quantum computing. Love, like quantum m
 Brewing the potion involves:
 
 - **Quantum Personalities:** Converting your answers into quantum bits, making your profile a quantum state that only the right person can collapse.
-- **Matchmaking Algorithm:** With quantum algorithms, we turn the matchmaking problem into a QUBO and let QAOA work its magic to find your perfect match.
+- **Matchmaking Algorithm:** With quantum algorithms, we reformulate the matchmaking problem with Quadratic Unconstrained Binary Optimization (QUBO) and let the Quantum Approximate Optimization Algorithm (QAOA) work its magic to find your perfect match.
 
 ## Making It Fun 🎉
 
@@ -23,6 +23,8 @@ Brewing the potion involves:
 ## Wanna Be Part of Our Experiment?
 
 Ready to dive into the quantum dating pool? Fill out our [MITqute Form](https://forms.gle/C2quqrLv36Dp1Yea9) and let the quantum forces guide you to your match!
+
+***UPDATE: The first round of matches are out! You can find your match [here](https://team-7-i-qu-hack-bmhy.vercel.app/)
 
 ## Timeline 📅
 
